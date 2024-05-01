@@ -1,0 +1,245 @@
+
+#include<stdio.h>
+#include<stdlib.h>
+int data,pos;
+struct node
+{
+    int data;
+    struct node *link;
+};
+struct node *first=NULL;
+struct node *new,*temp,*prev;
+void create_node()
+{
+    int info;
+    new=(struct node *)malloc(sizeof(struct node));
+    new->link=NULL;
+    printf("Enter the data\n");
+    scanf("%d",&data);
+    new->data=data;
+}
+void insertion_at_front()
+{
+    create_node();
+    if(first==NULL)
+    {
+        first=new;
+    }
+    else
+    {
+        new->link=first;
+        first=new;
+    }
+}
+void insertion_at_end()
+{
+    create_node();
+    if(first==NULL)
+    {
+        first=new;
+    }
+    else
+    {
+        temp=first;
+        while(temp->link!=NULL)
+        {
+            temp=temp->link;
+        }
+        temp->link=new;
+    }
+}
+void insertion_at_position(int pos)
+{
+    int i;
+    if(first==NULL)
+    {
+        printf("List is empty\n");
+    }
+    else
+    {
+        create_node();
+        if(pos==1)
+        {
+            new->link=first;
+            first=new;
+        }
+        else
+        {
+            temp=first;
+            for(i=1;i<pos;i++)
+            {
+                prev=temp;
+                temp=temp->link;
+            }
+            prev->link=new;
+            new->link=temp;
+        }
+    }
+}
+void insertion_at_data(int data)
+{
+    if(first==NULL)
+    {
+        printf("List is empty\n");
+    }
+    else
+    {
+        create_node();
+        if(first->data==data)
+        {
+            new->link=first;
+            first=new;
+        }
+        else
+        {
+            temp=first;
+            while(temp!=NULL&&temp->data!=data)
+            {
+                prev=temp;
+                temp=temp->link;
+            }
+            if(temp==NULL)
+            {
+                printf("Information not present\n");
+            }
+            else
+            {
+                prev->link=new;
+                new->link=temp;
+            }
+        }
+    }
+}
+
+void deletion_at_front()
+{
+    if(first==NULL)
+    {
+        printf("The list is empty\n");
+    }
+    else
+    {
+        struct node *temp;
+        temp=first;
+        first=temp->link;
+        printf("%d is deleted\n",temp->data);
+        free(temp);
+    }
+}
+void deletion_at_rear()
+{
+    if(first==NULL)
+    {
+        printf("The list is empty\n");
+    }
+    else if(first->link==NULL)
+    {
+        printf("%d is deleted\n",first->data);
+        free(first);
+        first=NULL;
+    }
+    else
+    {
+        struct node *temp,*prev;
+        temp=first;
+        while(temp->link!=NULL)
+        {
+            prev=temp;
+            temp=temp->link;
+        }
+        prev->link=NULL;
+        printf("%d is deleted\n",temp->data);
+        free(temp);
+    }
+}
+void deletion_on_data(int data)
+{
+    struct node *temp,*prev;
+    if(first==NULL)
+    {
+        printf("The list is empty\n");
+    }
+    else if(first->data==data)
+    {
+        temp=first;
+        first=first->link;
+        printf("%d is deleted\n",temp->data);
+        free(temp);
+    }
+    else
+    {
+        temp=first;
+        while(temp!=NULL&&temp->data!=data)
+        {
+            prev=temp;
+            temp=temp->link;
+        }
+        if(temp==NULL)
+        {
+            printf("Information not present\n");
+        }
+        else
+        {
+            prev->link=temp->link;
+            printf("%d is deleted\n",*temp);
+            free(temp);
+        }
+    }
+}
+void display()
+{
+    struct node *temp;
+    if(first==NULL)
+    {
+        printf("List is empty\n");
+    }
+    else
+    {
+        printf("contents in the list are\n");
+        temp=first;
+        while(temp!=NULL)
+        {
+            printf("%d-->",temp->data);
+            temp=temp->link;
+        }
+    }
+}
+void main()
+{
+    int choice;
+    while(1)
+    {
+        printf("\n\n\n1.Insert a node at front\n2.Insert a node at rear\n3.Insert based on position\n4.Insert based on data\n5.Delete at front\n6.Delete at rear\n7.Delete based on data\n8.Display\n9.Exit\n");
+        printf("Enter your choice\n");
+        scanf("%d",&choice);
+        switch(choice)
+        {
+            case 1:insertion_at_front();
+            break;
+            case 2:insertion_at_end();
+            break;
+            case 3:printf("Enter the position\n");
+                   scanf("%d",&pos);
+                   insertion_at_position(pos);
+            break;
+            case 4:printf("Enter the information\n");
+                    scanf("%d",&data);
+                    insertion_at_data(data);
+                    break;
+            case 5:deletion_at_front();
+            break;
+            case 6:deletion_at_rear();
+            break;
+            case 7:printf("Enter the information\n");
+                    scanf("%d",&data);
+                    deletion_on_data(data);
+                    break;
+            case 8:display();
+            break;
+            case 9:exit(0);
+            break;
+            default:printf("Invalid choice\n");
+            break;
+        }
+    }
+}
